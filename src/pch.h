@@ -1,7 +1,7 @@
 #pragma once
 
 //#include <windows.h>
-#include <d3d11.h>
+// #include <d3d11.h>
 
 #include <filesystem>
 #include <iostream>
@@ -15,8 +15,9 @@
 #include <string>
 #include <fstream>
 #include <regex>
+#include <charconv>
 
-#include <rapidcsv/rapidcsv.h>
+#include <rapidcsv.h>
 
 // Use 64bit size types for RapidJSON
 #define RAPIDJSON_NO_SIZETYPEDEFINE
@@ -34,6 +35,8 @@ namespace rapidjson { typedef ::std::size_t SizeType; }
 
 #include "logic/rmem.h"
 #include "logic/rtech.h"
+
+#define _Printf_format_string_
 
 #include "utils/binaryio.h"
 #include "utils/utils.h"

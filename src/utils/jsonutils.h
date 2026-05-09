@@ -198,7 +198,7 @@ inline JSONFieldType_e JSON_GetTypeForType()
 template <class T>
 inline bool JSON_HasMemberAndIsOfType(const T& data, typename T::StringRefType member, const JSONFieldType_e type)
 {
-    const T::ConstMemberIterator it = data.FindMember(rapidjson::Value(member));
+    const typename T::ConstMemberIterator it = data.FindMember(rapidjson::Value(member));
 
     if (it != data.MemberEnd())
     {
@@ -215,7 +215,7 @@ inline bool JSON_HasMemberAndIsOfType(const T& data, typename T::StringRefType m
 template <class T>
 inline bool JSON_GetIterator(const T& data, typename T::StringRefType member, typename T::ConstMemberIterator& out)
 {
-    const T::ConstMemberIterator it = data.FindMember(rapidjson::Value(member));
+    const typename T::ConstMemberIterator it = data.FindMember(rapidjson::Value(member));
 
     if (it != data.MemberEnd())
     {
@@ -236,7 +236,7 @@ template <class T>
 inline bool JSON_GetIterator(const T& data, typename T::StringRefType member,
     const JSONFieldType_e type, typename T::ConstMemberIterator& out)
 {
-    const T::ConstMemberIterator it = data.FindMember(rapidjson::Value(member));
+    const typename T::ConstMemberIterator it = data.FindMember(rapidjson::Value(member));
 
     if (it != data.MemberEnd())
     {
@@ -295,7 +295,7 @@ inline bool JSON_GetValue(const T& data, typename T::StringRefType member, const
 
     if (JSON_GetIterator(data, member, type, it))
     {
-        out = it->value.Get<V>();
+        out = it->value.template Get<V>();
         return true;
     }
 
@@ -314,7 +314,7 @@ inline bool JSON_GetValue(const T& data, typename T::StringRefType member, V& ou
 
     if (JSON_GetIterator(data, member, JSON_GetTypeForType<V>(), it))
     {
-        out = it->value.Get<V>();
+        out = it->value.template Get<V>();
         return true;
     }
 
@@ -367,7 +367,7 @@ inline V JSON_GetValueRequired(const T& data, typename T::StringRefType member)
 
     if (JSON_GetRequired(data, member, JSON_GetTypeForType<V>(), it))
     {
-        return it->value.Get<V>();
+        return it->value.template Get<V>();
     }
 
     return V{};
@@ -430,7 +430,7 @@ inline bool JSON_ParseNumber(const T& data, V& num)
 #if defined(MSC_PLATFORM_TOOLSET_v145)
         num = data.template Get<V>();
 #else
-        num = data.Get<V>();
+        num = data.template Get<V>();
 #endif
         return true;
     }

@@ -13,23 +13,23 @@ class rmem
 private:
 	void* _pbase = nullptr; // the original pointer. equal to _pbuf - curpos
 	void* _pbuf = nullptr; // active buffer pointer. _pbase + _curpos
-	unsigned __int64 _curpos = 0;
-	unsigned __int64 _bufsize = 0;
+	uint64_t _curpos = 0;
+	uint64_t _bufsize = 0;
 
 public:
-	rmem(void* pbuf, unsigned __int64 bufsize = -1)
+	rmem(void* pbuf, uint64_t bufsize = -1)
 	{
 		this->_pbase = pbuf;
 		this->_pbuf = pbuf;
 		this->_bufsize = bufsize;
 	}
 
-	inline void setBufferSize(unsigned __int64 new_size)
+	inline void setBufferSize(uint64_t new_size)
 	{
 		this->_bufsize = new_size;
 	}
 
-	void seek(unsigned __int64 pos, rseekdir dir)
+	void seek(uint64_t pos, rseekdir dir)
 	{
 		if (dir == rseekdir::cur && (this->_curpos + pos) < this->_bufsize)
 		{
@@ -47,7 +47,7 @@ public:
 
 	void* getBasePtr() { return this->_pbase; };
 	void* getPtr() { return this->_pbuf; };
-	unsigned __int64 getPosition() { return this->_curpos; };
+	uint64_t getPosition() { return this->_curpos; };
 
 public: // read/write
 	
@@ -94,7 +94,7 @@ public: // read/write
 	}
 
 	template<typename T>
-	void write(T val, unsigned __int64 offset)
+	void write(T val, uint64_t offset)
 	{
 		if (offset > _bufsize)
 			throw "failed to write to buffer: attempted to write past the end of the buffer";
@@ -104,6 +104,6 @@ public: // read/write
 	}
 
 //private: // internal helper stuff
-	//void _AdvanceBuffer(unsigned __int64 amount);
+//void _AdvanceBuffer(uint64_t amount);
 };
 

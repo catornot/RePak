@@ -63,7 +63,10 @@ size_t Utils::WriteStringVector(BinaryIO& out, const std::vector<std::string>& d
 FILETIME Utils::GetSystemFileTime()
 {
 	FILETIME ft;
-	GetSystemTimeAsFileTime(&ft);
+	memset(&fd, 0x0, sizeof(fd))
+  #ifdef _MSC_VER
+  GetSystemTimeAsFileTime(&ft);
+  #endif
 	return ft;
 }
 

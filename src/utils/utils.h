@@ -1,5 +1,10 @@
 #pragma once
 
+typedef struct _FILETIME {
+  uint32_t dwLowDateTime;
+  uint32_t dwHighDateTime;
+} FILETIME, *PFILETIME, *LPFILETIME;
+
 namespace Utils
 {
 	uintmax_t GetFileSize(const std::string& filename);

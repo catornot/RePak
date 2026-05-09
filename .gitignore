@@ -337,3 +337,7 @@ ASALocalRun/
 # Generated Assets (we really don't want these to end up on git)
 *.rpak
 *.starpak
+
+# Nix
+/result
+/.direnv
