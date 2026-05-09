@@ -1,5 +1,5 @@
-#include "pch.h"
 #include "strutils.h"
+#include <cstdarg>
 
 std::vector<std::string> Utils::StringSplit(std::string input, const char delim, const size_t max)
 {

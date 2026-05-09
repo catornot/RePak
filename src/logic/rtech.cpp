@@ -39,16 +39,24 @@ static PakGuid_t StringToGuidAligned(const char* string)
 			} while (v10 >= 0x100);
 		}
 		v11 = 0x633D5F1 * v1;
-		v12 = (0xFB8C4D96501i64 * (uint64_t)(((v5 & *(uint32_t*)string) - 45 * (v8 >> 7)) & 0xDFDFDFDF)) >> 24;
+		v12 = (0xFB8C4D96501ULL * (uint64_t)(((v5 & *(uint32_t*)string) - 45 * (v8 >> 7)) & 0xDFDFDFDF)) >> 24;
 		if (v4)
 			break;
 		string += 4;
 		v1 = ((v11 + v12) >> 61) ^ (v11 + v12);
 	}
 	v13 = -1;
-	if (_BitScanReverse((unsigned long*)&v15, v5))
+  #ifdef _MSC_VER
+	if (BitScanReverse((unsigned long*)&v15, v5))
 		v13 = v15;
-	return v12 + v11 - 0xAE502812AA7333i64 * (uint32_t)(i + v13 / 8);
+	#else
+	if (v6 != 0)
+	{
+	    v15 = 31u - __builtin_clz(v6);
+	    v13 = v15;
+	}
+	#endif
+	return v12 + v11 - 0xAE502812AA7333ULL * (uint32_t)(i + v13 / 8);
 }
 
 // compute a guid from input string data that resides in a memory address that
@@ -110,16 +118,25 @@ static PakGuid_t StringToGuidUnaligned(const char* string)
 			} while (v11 >= 0x100);
 		}
 		v12 = 0x633D5F1 * v1;
-		v13 = (0xFB8C4D96501i64 * (uint64_t)((v7 - 45 * (v9 >> 7)) & 0xDFDFDFDF)) >> 24;
+		v13 = (0xFB8C4D96501ULL * (uint64_t)((v7 - 45 * (v9 >> 7)) & 0xDFDFDFDF)) >> 24;
 		if (v5)
 			break;
-		v2 += 4i64;
+		v2 += 4ULL;
 		v1 = ((v12 + v13) >> 61) ^ (v12 + v13);
 	}
 	v14 = -1;
-	if (_BitScanReverse((unsigned long*)&v16, v6))
+	
+  #ifdef _MSC_VER
+	if (BitScanReverse((unsigned long*)&v16, v6))
 		v14 = v16;
-	return v13 + v12 - 0xAE502812AA7333i64 * (uint32_t)(i + v14 / 8);
+	#else
+	if (v6 != 0)
+	{
+	    v16 = 31u - __builtin_clz(v6);
+	    v14 = v16;
+	}
+	#endif
+	return v13 + v12 - 0xAE502812AA7333ULL * (uint32_t)(i + v14 / 8);
 }
 
 PakGuid_t RTech::StringToGuid(const char* const string)
@@ -147,7 +164,7 @@ PakGuid_t RTech::GetAssetGUIDFromString(const char* const str, const bool forceR
 	PakGuid_t guid = 0;
 
 	// check for upper and lower case hex guids (e.g. 0x5DCAT, 0x5dcat)
-	if (!sscanf_s(str, "0x%llX", &guid) && !sscanf_s(str, "0x%llx", &guid))
+	if (!sscanf(str, "0x%lX", &guid) && !sscanf(str, "0x%lx", &guid))
 	{
 		if (forceRpakExtension)
 			guid = RTech::StringToGuid(Utils::ChangeExtension(str, ".rpak").c_str());
@@ -162,7 +179,7 @@ bool RTech::ParseGUIDFromString(const char* const str, PakGuid_t* const pGuid)
 {
 	PakGuid_t guid = 0;
 
-	const bool found = sscanf_s(str, "0x%llX", &guid) || sscanf_s(str, "0x%llx", &guid);
+	const bool found = sscanf(str, "0x%lX", &guid) || sscanf(str, "0x%lx", &guid);
 
 	if (found && pGuid != nullptr)
 		*pGuid = guid;

@@ -60,7 +60,7 @@ static size_t Material_AddTextures(CPakFileBuilder* const pak, const rapidjson::
     // textureSlotCount determines the total number of texture slots in the assigned shaderset.
     // shaderset has a texture input count variable that is used when looping over the texture array
     // and since we can't modify that from here, we have to rely on the user to set this properly!
-    const size_t textureCount = JSON_GetValueOrDefault(mapEntry, "textureSlotCount", 0ull);
+    const size_t textureCount = JSON_GetValueOrDefault(mapEntry, "textureSlotCount", uint64_t());
 
     return std::max(textureCount, Material_GetHighestTextureBindPoint(textures) + 1);
 }

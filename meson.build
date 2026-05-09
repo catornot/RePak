@@ -1,6 +1,6 @@
 project(
   'RePak',
-  'cpp',
+  'cpp', 'c',
   version : '0.1',
   meson_version : '>= 1.3.0',
   # default_options : ['warning_level=3', 'cpp_std=c++20'],
@@ -11,11 +11,143 @@ cpp = meson.get_compiler('cpp')
 
 lib_d3d11 = cpp.find_library('dxvk_d3d11')
 
+zstd_sources = [
+  'src/thirdparty/zstd/zdict.h',
+  'src/thirdparty/zstd/zstd_errors.h',
+  'src/thirdparty/zstd/decompress/zstd_decompress_internal.h',
+  'src/thirdparty/zstd/decompress/zstd_ddict.h',
+  'src/thirdparty/zstd/decompress/zstd_decompress_block.h',
+  'src/thirdparty/zstd/common/xxhash.h',
+  'src/thirdparty/zstd/common/bitstream.h',
+  'src/thirdparty/zstd/common/zstd_trace.h',
+  'src/thirdparty/zstd/common/huf.h',
+  'src/thirdparty/zstd/common/zstd_internal.h',
+  'src/thirdparty/zstd/common/zstd_deps.h',
+  'src/thirdparty/zstd/common/cpu.h',
+  'src/thirdparty/zstd/common/threading.h',
+  'src/thirdparty/zstd/common/pool.h',
+  'src/thirdparty/zstd/common/debug.h',
+  'src/thirdparty/zstd/common/compiler.h',
+  'src/thirdparty/zstd/common/fse.h',
+  'src/thirdparty/zstd/common/bits.h',
+  'src/thirdparty/zstd/common/error_private.h',
+  'src/thirdparty/zstd/common/allocations.h',
+  'src/thirdparty/zstd/common/mem.h',
+  'src/thirdparty/zstd/common/portability_macros.h',
+  'src/thirdparty/zstd/deprecated/zbuff.h',
+  'src/thirdparty/zstd/dictBuilder/divsufsort.h',
+  'src/thirdparty/zstd/dictBuilder/cover.h',
+  'src/thirdparty/zstd/compress/hist.h',
+  'src/thirdparty/zstd/compress/zstd_preSplit.h',
+  'src/thirdparty/zstd/compress/zstd_ldm.h',
+  'src/thirdparty/zstd/compress/zstd_ldm_geartab.h',
+  'src/thirdparty/zstd/compress/zstd_lazy.h',
+  'src/thirdparty/zstd/compress/zstd_double_fast.h',
+  'src/thirdparty/zstd/compress/zstd_fast.h',
+  'src/thirdparty/zstd/compress/clevels.h',
+  'src/thirdparty/zstd/compress/zstd_compress_internal.h',
+  'src/thirdparty/zstd/compress/zstdmt_compress.h',
+  'src/thirdparty/zstd/compress/zstd_opt.h',
+  'src/thirdparty/zstd/compress/zstd_cwksp.h',
+  'src/thirdparty/zstd/compress/zstd_compress_superblock.h',
+  'src/thirdparty/zstd/compress/zstd_compress_sequences.h',
+  'src/thirdparty/zstd/compress/zstd_compress_literals.h',
+  'src/thirdparty/zstd/zstd.h',
+  'src/thirdparty/zstd/legacy/zstd_v05.h',
+  'src/thirdparty/zstd/legacy/zstd_v02.h',
+  'src/thirdparty/zstd/legacy/zstd_v04.h',
+  'src/thirdparty/zstd/legacy/zstd_v01.h',
+  'src/thirdparty/zstd/legacy/zstd_v03.h',
+  'src/thirdparty/zstd/legacy/zstd_legacy.h',
+  'src/thirdparty/zstd/legacy/zstd_v07.h',
+  'src/thirdparty/zstd/legacy/zstd_v06.h',
+  'src/thirdparty/zstd/decompress/zstd_ddict.c',
+  'src/thirdparty/zstd/decompress/zstd_decompress.c',
+  'src/thirdparty/zstd/decompress/zstd_decompress_block.c',
+  'src/thirdparty/zstd/decompress/huf_decompress.c',
+  'src/thirdparty/zstd/common/error_private.c',
+  'src/thirdparty/zstd/common/fse_decompress.c',
+  'src/thirdparty/zstd/common/pool.c',
+  'src/thirdparty/zstd/common/zstd_common.c',
+  'src/thirdparty/zstd/common/threading.c',
+  'src/thirdparty/zstd/common/debug.c',
+  'src/thirdparty/zstd/common/entropy_common.c',
+  'src/thirdparty/zstd/common/xxhash.c',
+  'src/thirdparty/zstd/deprecated/zbuff_decompress.c',
+  'src/thirdparty/zstd/deprecated/zbuff_common.c',
+  'src/thirdparty/zstd/deprecated/zbuff_compress.c',
+  'src/thirdparty/zstd/dictBuilder/divsufsort.c',
+  'src/thirdparty/zstd/dictBuilder/fastcover.c',
+  'src/thirdparty/zstd/dictBuilder/cover.c',
+  'src/thirdparty/zstd/dictBuilder/zdict.c',
+  'src/thirdparty/zstd/compress/zstd_lazy.c',
+  'src/thirdparty/zstd/compress/zstd_fast.c',
+  'src/thirdparty/zstd/compress/zstd_compress.c',
+  'src/thirdparty/zstd/compress/fse_compress.c',
+  'src/thirdparty/zstd/compress/zstd_compress_literals.c',
+  'src/thirdparty/zstd/compress/hist.c',
+  'src/thirdparty/zstd/compress/zstd_opt.c',
+  'src/thirdparty/zstd/compress/zstd_double_fast.c',
+  'src/thirdparty/zstd/compress/huf_compress.c',
+  'src/thirdparty/zstd/compress/zstd_compress_superblock.c',
+  'src/thirdparty/zstd/compress/zstd_ldm.c',
+  'src/thirdparty/zstd/compress/zstdmt_compress.c',
+  'src/thirdparty/zstd/compress/zstd_preSplit.c',
+  'src/thirdparty/zstd/compress/zstd_compress_sequences.c',
+  'src/thirdparty/zstd/legacy/zstd_v05.c',
+  'src/thirdparty/zstd/legacy/zstd_v03.c',
+  'src/thirdparty/zstd/legacy/zstd_v01.c',
+  'src/thirdparty/zstd/legacy/zstd_v04.c',
+  'src/thirdparty/zstd/legacy/zstd_v07.c',
+  'src/thirdparty/zstd/legacy/zstd_v06.c',
+  'src/thirdparty/zstd/legacy/zstd_v02.c',
+]
+
+lib_zstd = static_library(
+  'zstd',
+  sources : zstd_sources,
+  dependencies: [ dependency('threads') ],
+  include_directories : include_directories('src/thirdparty/zstd'),
+  c_args : [
+    '-DZSTD_MULTITHREAD=1',
+    '-DZSTD_DISABLE_ASM',
+    '-DZSTD_DISABLE_FAST_HUFFMAN',
+  ],
+)
+
+zstd_dep = declare_dependency(
+    link_with: lib_zstd,
+    include_directories: include_directories('src/thirdparty/zstd'),
+)
+
+lib_rapidcsv = static_library(
+    'rapidcsv',
+    sources : [],
+    dependencies: [],
+    include_directories: include_directories('src/thirdparty/rapidcsv'),
+)
+
+rapidcsv_dep = declare_dependency(
+    link_with: lib_rapidcsv,
+    include_directories: include_directories('src/thirdparty/rapidcsv'),
+)
+
+lib_rapidjson = static_library(
+    'rapidjson',
+    sources : [],
+    dependencies: [],
+    include_directories: include_directories('src/thirdparty/rapidjson'),
+)
+
+rapidjson_dep = declare_dependency(
+    link_with: lib_rapidjson,
+    include_directories: include_directories('src/thirdparty/rapidjson'),
+)
+
 dependencies = [
-  dependency('RapidJSON'),  
-  dependency('rapidcsv'),  
-  dependency('libzstd'),
-  # dependency('dxvk-d3d11'),
+  rapidjson_dep,
+  rapidcsv_dep,  
+  zstd_dep,
   lib_d3d11
 ]
 

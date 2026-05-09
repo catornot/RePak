@@ -501,7 +501,7 @@ static bool Pak_StreamToStreamEncode(BinaryIO& inStream, BinaryIO& outStream, co
 		return false;
 	}
 
-	if (!Pak_InitEncoderContext(s_zstdPakEncoder.cctx, decodedFrameSize, compressLevel, workerCount))
+	if (!Pak_InitEncoderContext(&s_zstdPakEncoder.cctx, decodedFrameSize, compressLevel, workerCount))
 	{
 		return false;
 	}
@@ -546,7 +546,7 @@ static bool Pak_StreamToStreamEncode(BinaryIO& inStream, BinaryIO& outStream, co
 		bool finished;
 		do {
 			ZSTD_outBuffer outputFrame = { buffOut, buffOutSize, 0 };
-			size_t const remaining = ZSTD_compressStream2(s_zstdPakEncoder.cctx, &outputFrame, &inputFrame, mode);
+			size_t const remaining = ZSTD_compressStream2(&s_zstdPakEncoder.cctx, &outputFrame, &inputFrame, mode);
 
 			if (ZSTD_isError(remaining))
 			{
@@ -584,7 +584,7 @@ static bool Pak_StreamToStreamDecode(BinaryIO& inStream, BinaryIO& outStream, co
 		return false;
 	}
 
-	if (!Pak_InitDecoderContext(s_zstdPakDecoder.dctx))
+	if (!Pak_InitDecoderContext(&s_zstdPakDecoder.dctx))
 	{
 		return false;
 	}
@@ -628,7 +628,7 @@ static bool Pak_StreamToStreamDecode(BinaryIO& inStream, BinaryIO& outStream, co
 
 		while (inputFrame.pos < inputFrame.size) {
 			ZSTD_outBuffer outputFrame = { buffOut, buffOutSize, 0 };
-			size_t const ret = ZSTD_decompressStream(s_zstdPakDecoder.dctx, &outputFrame, &inputFrame);
+			size_t const ret = ZSTD_decompressStream(&s_zstdPakDecoder.dctx, &outputFrame, &inputFrame);
 
 			if (ZSTD_isError(ret))
 			{

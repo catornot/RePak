@@ -51,20 +51,6 @@
               ];
 
               buildInputs = [
-                pkgs.rapidjson
-                pkgs.zstd
-                (pkgs.rapidcsv.overrideAttrs (
-                  prevAttrs: finalAttrs: {
-                    version = "8.88";
-
-                    src = pkgs.fetchFromGitHub {
-                      owner = "d99kris";
-                      repo = "rapidcsv";
-                      rev = "v${finalAttrs.version}";
-                      hash = "sha256-8g96mgTArtpAYHqfGCBaG4WB0ho3l8nygAS8yLVq0XE=";
-                    };
-                  }
-                ))
                 dxvk-native
               ];
 

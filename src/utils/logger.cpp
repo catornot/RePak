@@ -1,4 +1,5 @@
 #include "pch.h"
+#include <cstdarg>
 #include "logger.h"
 
 const char* g_currentAsset = nullptr;

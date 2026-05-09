@@ -4,7 +4,7 @@
 //
 //=============================================================================//
 #include "utils.h"
-#include <rapidjson/error/en.h>
+#include <error/en.h>
 
 //-----------------------------------------------------------------------------
 // purpose: gets size of the specified file

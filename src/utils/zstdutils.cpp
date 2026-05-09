@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "zstdutils.h"
 
 ZSTDEncoder_s::ZSTDEncoder_s()

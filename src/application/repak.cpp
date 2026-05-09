@@ -154,7 +154,7 @@ static void RePak_ExplainUsage()
         ZSTD_maxCLevel(), REPAK_DEFAULT_COMPRESS_LEVEL,
 
         "workerCount",
-        1, ZSTDMT_NBWORKERS_MAX, REPAK_DEFAULT_COMPRESS_WORKERS,
+        1, ZSTDMT_WORKERS_MAX, REPAK_DEFAULT_COMPRESS_WORKERS,
 
         REPAK_DECOMPRESS_PAK_COMMAND,
         "pakFilePath"
