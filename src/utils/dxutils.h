@@ -24,39 +24,39 @@
 #define DXBC_FOURCC_RDEF_NAME (('F'<<24)+('E'<<16)+('D'<<8)+'R')
 
 struct DDS_PIXELFORMAT {
-	DWORD dwSize;
-	DWORD dwFlags;
+	uint32_t dwSize;
+	uint32_t dwFlags;
 	uint32_t dwFourCC;
-	DWORD dwRGBBitCount;
-	DWORD dwRBitMask;
-	DWORD dwGBitMask;
-	DWORD dwBBitMask;
-	DWORD dwABitMask;
+	uint32_t dwRGBBitCount;
+	uint32_t dwRBitMask;
+	uint32_t dwGBitMask;
+	uint32_t dwBBitMask;
+	uint32_t dwABitMask;
 };
 
 typedef struct {
-	DWORD           dwSize;
-	DWORD           dwFlags;
-	DWORD           dwHeight;
-	DWORD           dwWidth;
-	DWORD           dwPitchOrLinearSize;
-	DWORD           dwDepth;
-	DWORD           dwMipMapCount;
-	DWORD           dwReserved1[11];
+	uint32_t           dwSize;
+	uint32_t           dwFlags;
+	uint32_t           dwHeight;
+	uint32_t           dwWidth;
+	uint32_t           dwPitchOrLinearSize;
+	uint32_t           dwDepth;
+	uint32_t           dwMipMapCount;
+	uint32_t           dwReserved1[11];
 	DDS_PIXELFORMAT ddspf;
-	DWORD           dwCaps;
-	DWORD           dwCaps2;
-	DWORD           dwCaps3;
-	DWORD           dwCaps4;
-	DWORD           dwReserved2;
+	uint32_t           dwCaps;
+	uint32_t           dwCaps2;
+	uint32_t           dwCaps3;
+	uint32_t           dwCaps4;
+	uint32_t           dwReserved2;
 } DDS_HEADER;
 
 struct DDS_HEADER_DXT10 {
 	DXGI_FORMAT              dxgiFormat;
 	D3D10_RESOURCE_DIMENSION resourceDimension;
-	UINT                     miscFlag;
-	UINT                     arraySize;
-	UINT                     miscFlags2;
+	uint32_t                     miscFlag;
+	uint32_t                     arraySize;
+	uint32_t                     miscFlags2;
 };
 
 

@@ -3,13 +3,21 @@ project(
   'cpp',
   version : '0.1',
   meson_version : '>= 1.3.0',
-  default_options : ['warning_level=3', 'cpp_std=c++20'],
+  # default_options : ['warning_level=3', 'cpp_std=c++20'],
+  default_options : ['warning_level=0', 'cpp_std=c++20'],
+  default_options : ['warning_level=0', 'cpp_std=c++d3d11'],
 )
+
+cpp = meson.get_compiler('cpp')
+
+lib_d3d11 = cpp.find_library('dxvk_d3d11')
 
 dependencies = [
   dependency('RapidJSON'),  
   dependency('rapidcsv'),  
   dependency('libzstd'),
+  # dependency('dxvk-d3d11'),
+  lib_d3d11
 ]
 
 sources = [
@@ -95,6 +103,7 @@ exe = executable(
   sources,
   install : true,
   dependencies : dependencies,
+  include_directories : include_directories('src'),
   cpp_pch : 'src/pch.h'
 )
 

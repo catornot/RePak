@@ -94,7 +94,7 @@ struct PagePtr_t
 // which should be written depending on the version
 struct PakHdr_t
 {
-	DWORD magic = 0x6b615052;
+	uint32_t magic = 0x6b615052;
 
 	uint16_t fileVersion = 0x8;
 	uint16_t flags = 0;

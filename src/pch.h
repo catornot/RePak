@@ -1,7 +1,15 @@
 #pragma once
 
 //#include <windows.h>
-// #include <d3d11.h>
+#include <d3d11.h>
+
+#if !defined _MSC_VER
+#define FORCEINLINE	inline
+// idk if this is good tbh
+#define ARRAYSIZE(a) \
+  ((sizeof(a) / sizeof(*(a))) / \
+  static_cast<size_t>(!(sizeof(a) % sizeof(*(a)))))
+#endif
 
 #include <filesystem>
 #include <iostream>
@@ -16,6 +24,7 @@
 #include <fstream>
 #include <regex>
 #include <charconv>
+#include <immintrin.h>
 
 #include <rapidcsv.h>
 

@@ -16,11 +16,11 @@ struct AnimRecordingFrame_s
 	float animPlaybackRate;
 	int overlayIndex;
 	int activeAnimOverlayCount;
-	__int16 field_34;
-	__int16 field_36;
+	int16_t field_34;
+	int16_t field_36;
 	int field_38;
 	int field_3C;
-	__int16 field_40;
+	int16_t field_40;
 	char field_42;
 	char field_43;
 };

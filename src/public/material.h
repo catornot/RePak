@@ -88,15 +88,15 @@ inline MaterialShaderType_e Material_ShaderTypeFromString(const std::string& str
 
 struct MaterialBlendState_t
 {
-	__int32 unknown : 1;
-	__int32 blendEnable : 1;
-	__int32 srcBlend : 5;
-	__int32 destBlend : 5;
-	__int32 blendOp : 3;
-	__int32 srcBlendAlpha : 5;
-	__int32 destBlendAlpha : 5;
-	__int32 blendOpAlpha : 3;
-	__int32 renderTargetWriteMask : 4;
+	int32_t unknown : 1;
+	int32_t blendEnable : 1;
+	int32_t srcBlend : 5;
+	int32_t destBlend : 5;
+	int32_t blendOp : 3;
+	int32_t srcBlendAlpha : 5;
+	int32_t destBlendAlpha : 5;
+	int32_t blendOpAlpha : 3;
+	int32_t renderTargetWriteMask : 4;
 
 	MaterialBlendState_t() = default;
 
@@ -104,7 +104,7 @@ struct MaterialBlendState_t
 		const D3D11_BLEND _srcBlend, const D3D11_BLEND _destBlend,
 		const D3D11_BLEND_OP _blendOp, const D3D11_BLEND _srcBlendAlpha,
 		const D3D11_BLEND _destBlendAlpha, const D3D11_BLEND_OP _blendOpAlpha,
-		const __int8 _renderTargetWriteMask)
+		const int8_t _renderTargetWriteMask)
 	{
 		this->unknown = bUnknown ? 1 : 0;
 		this->blendEnable = bBlendEnable ? 1 : 0;
@@ -141,7 +141,7 @@ struct MaterialBlendState_t
 #pragma warning(disable : 4324)
 
 // aligned to 16 bytes so it can be loaded as 3 m128i structs in engine
-struct __declspec(align(16)) MaterialDXState_v15_t
+struct alignas(16) MaterialDXState_v15_t
 {
 	// bitfield defining a D3D11_RENDER_TARGET_BLEND_DESC for each of the 8 possible DX render targets
 	MaterialBlendState_t blendStates[MAT_BLEND_STATE_COUNT];
@@ -157,7 +157,7 @@ struct __declspec(align(16)) MaterialDXState_v15_t
 
 static_assert(sizeof(MaterialDXState_v15_t) == 0x30);
 
-struct __declspec(align(16)) MaterialDXState_v12_t
+struct alignas(16) MaterialDXState_v12_t
 {
 	// r2 only supports 4 render targets?
 	MaterialBlendState_t blendStates[4];
@@ -442,7 +442,7 @@ static inline const char* s_renderPassMaterialNames[] = {
 	"color pass"
 };
 
-struct __declspec(align(16)) MaterialAssetHeader_v12_t
+struct alignas(16) MaterialAssetHeader_v12_t
 {
 	uint64_t vftableReserved; // Gets set to CMaterialGlue vtbl ptr
 	char gap_8[0x8]; // unused?
@@ -489,7 +489,7 @@ struct __declspec(align(16)) MaterialAssetHeader_v12_t
 static_assert(sizeof(MaterialAssetHeader_v12_t) == 208);
 
 // start of CMaterialGlue class
-struct __declspec(align(16)) MaterialAssetHeader_v15_t
+struct alignas(16) MaterialAssetHeader_v15_t
 {
 	uint64_t vftableReserved; // reserved for virtual function table pointer (when copied into native CMaterialGlue)
 

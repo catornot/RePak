@@ -134,7 +134,7 @@ struct studiohdr_t
 	// if STUDIOHDR_FLAGS_CONSTANT_DIRECTIONAL_LIGHT_DOT is set,
 	// this value is used to calculate directional components of lighting 
 	// on static props
-	byte constdirectionallightdot;
+	std::byte constdirectionallightdot;
 
 	// set during load of mdl data to track *desired* lod configuration (not actual)
 	// the *actual* clamped root lod is found in studiohwdata
@@ -378,34 +378,34 @@ struct VertexGroupHeader_t
 	int unk;	        // Usually 0
 	int dataSize;	    // Total size of data + header in starpak
 
-	__int64 boneStateChangeOffset; // offset to bone remap buffer
-	__int64 numBoneStateChanges;   // number of "bone remaps" (size: 1)
+	int64_t boneStateChangeOffset; // offset to bone remap buffer
+	int64_t numBoneStateChanges;   // number of "bone remaps" (size: 1)
 
-	__int64 meshOffset;            // offset to mesh buffer
-	__int64 numMeshes;             // number of meshes (size: 0x48)
+	int64_t meshOffset;            // offset to mesh buffer
+	int64_t numMeshes;             // number of meshes (size: 0x48)
 
-	__int64 indexOffset;           // offset to index buffer
-	__int64 numIndices;            // number of indices (size: 2 (uint16_t))
+	int64_t indexOffset;           // offset to index buffer
+	int64_t numIndices;            // number of indices (size: 2 (uint16_t))
 
-	__int64 vertOffset;            // offset to vertex buffer
-	__int64 vertDataSize;          // number of bytes in vertex buffer
+	int64_t vertOffset;            // offset to vertex buffer
+	int64_t vertDataSize;          // number of bytes in vertex buffer
 
-	__int64 externalWeightOffset;  // offset to extended weights buffer
-	__int64 externalWeightsSize;   // number of bytes in extended weights buffer
+	int64_t externalWeightOffset;  // offset to extended weights buffer
+	int64_t externalWeightsSize;   // number of bytes in extended weights buffer
 
 	// there is one for every LOD mesh
 	// i.e, unknownCount == lod.meshCount for all LODs
-	__int64 unknownOffset;         // offset to buffer
-	__int64 numUnknown;            // count (size: 0x30)
+	int64_t unknownOffset;         // offset to buffer
+	int64_t numUnknown;            // count (size: 0x30)
 
-	__int64 lodOffset;             // offset to LOD buffer
-	__int64 numLODs;               // number of LODs (size: 0x8)
+	int64_t lodOffset;             // offset to LOD buffer
+	int64_t numLODs;               // number of LODs (size: 0x8)
 
-	__int64 legacyWeightOffset;	   // seems to be an offset into the "external weights" buffer for this mesh
-	__int64 numLegacyWeights;      // seems to be the number of "external weights" that this mesh uses
+	int64_t legacyWeightOffset;	   // seems to be an offset into the "external weights" buffer for this mesh
+	int64_t numLegacyWeights;      // seems to be the number of "external weights" that this mesh uses
 
-	__int64 stripOffset;           // offset to strips buffer
-	__int64 numStrips;             // number of strips (size: 0x23)
+	int64_t stripOffset;           // offset to strips buffer
+	int64_t numStrips;             // number of strips (size: 0x23)
 
 	int unused[16];
 };

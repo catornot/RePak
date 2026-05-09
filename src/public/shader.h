@@ -33,7 +33,7 @@ FORCEINLINE eShaderType GetShaderTypeByName(const std::string& name)
 {
     for (int i = 0; i < ARRAYSIZE(s_dxShaderTypeNames); ++i)
     {
-        if (!_stricmp(s_dxShaderTypeNames[i], name.c_str()))
+        if (!strcasecmp(s_dxShaderTypeNames[i], name.c_str()))
             return static_cast<eShaderType>(i);
     }
 

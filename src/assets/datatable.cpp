@@ -37,7 +37,8 @@ static size_t DataTable_SetupRows(const rapidcsv::Document& doc, datatable_t* co
     // other rows must match this count.
     for (uint32_t i = 0; i < doc.GetRowCount(); ++i)
     {
-        const uint32_t columnCount = static_cast<uint32_t>(doc.GetColumnCount(i));
+        // const uint32_t columnCount = static_cast<uint32_t>(doc.GetColumnCount(i));
+        const uint32_t columnCount = static_cast<uint32_t>(doc.GetColumnCount());
 
         if (columnCount != dtblHdr->numColumns)
             Error("Expected %u columns for data row #%u, found %u.\n", dtblHdr->numColumns, i, columnCount);
@@ -161,9 +162,9 @@ static void DataTable_SetupValues(CPakFileBuilder* const pak, PakAsset_t& asset,
             {
                 const std::string val = DataTable_ParseCellFromDocument<std::string>(doc, colIdx, rowIdx, col.type);
 
-                if (!_stricmp(val.c_str(), "true") || val == "1")
+                if (!strcasecmp(val.c_str(), "true") || val == "1")
                     valbuf.write<uint32_t>(true);
-                else if (!_stricmp(val.c_str(), "false") || val == "0")
+                else if (!strcasecmp(val.c_str(), "false") || val == "0")
                     valbuf.write<uint32_t>(false);
                 else
                     DataTable_ReportInvalidValueError(col.type, rowIdx, colIdx);

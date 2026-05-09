@@ -12,6 +12,22 @@
       system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
+        dxvk-native = pkgs.stdenv.mkDerivation (finalAttrs: {
+          pname = "dxvk-native";
+          version = "2.7.1";
+
+          src = fetchTarball {
+            url = "https://github.com/doitsujin/dxvk/releases/download/v${finalAttrs.version}/dxvk-native-${finalAttrs.version}-steamrt-sniper.tar.gz";
+            sha256 = "sha256:0y7fg1pggychscgmw5j7vw1sckl8z2sz2vb1x4jgnj4sknqdmnmw";
+          };
+
+          installPhase = ''
+            mkdir -p $out
+            cp -r * $out/
+            mv $out/include/dxvk/* $out/include
+            rmdir $out/include/dxvk
+          '';
+        });
       in
       {
         formatter = pkgs.nixfmt-tree;
@@ -37,8 +53,18 @@
               buildInputs = [
                 pkgs.rapidjson
                 pkgs.zstd.dev
-                pkgs.rapidcsv
-                pkgs.dxvk.lib
+                (pkgs.rapidcsv.overrideAttrs (
+                  prevAttrs: finalAttrs: {
+                    version = "8.88";
+
+                    src = pkgs.fetchFromGitHub {
+                      owner = "d99kris";
+                      repo = "rapidcsv";
+                      rev = "v${finalAttrs.version}";
+                      hash = "sha256-8g96mgTArtpAYHqfGCBaG4WB0ho3l8nygAS8yLVq0XE=";
+std::byt)e                  }
+                ))
+                dxvk-native
               ];
 
               shellHook = ''

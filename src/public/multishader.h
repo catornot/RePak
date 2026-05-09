@@ -64,8 +64,8 @@ struct MultiShaderWrapper_ShaderSet_t
 {
 	// For R5-exported assets, these should both always be set, but in the event that a shaderset doesn't have one of the shader types,
 	// we need to make sure that the parser only tries to read valid data.
-	unsigned __int64 pixelShaderGuid;
-	unsigned __int64 vertexShaderGuid;
+	unsigned int64_t pixelShaderGuid;
+	unsigned int64_t vertexShaderGuid;
 
 	unsigned short numPixelShaderTextures;
 	unsigned short numVertexShaderTextures;
@@ -85,8 +85,8 @@ static_assert(sizeof(MultiShaderWrapper_ShaderSet_t) == 32);
 struct MultiShaderWrapper_Shader_t
 {
 	// shaderFeatures MUST be the first member of this struct! see WriteShader.
-	unsigned __int64 shaderFeatures : 56; // Defines some shader counts.
-	unsigned __int64 numShaderDescriptors : 8;  // Number of MultiShaderWrapper_ShaderDesc_t struct instances before file data.
+	unsigned int64_t shaderFeatures : 56; // Defines some shader counts.
+	unsigned int64_t numShaderDescriptors : 8;  // Number of MultiShaderWrapper_ShaderDesc_t struct instances before file data.
 
 	unsigned int nameLength;
 	unsigned int nameOffset;
@@ -121,7 +121,7 @@ struct MultiShaderWrapper_ShaderDesc_t
 		_ReferenceShader u_ref;
 	};
 
-	unsigned __int64 inputFlags[2];
+	unsigned int64_t inputFlags[2];
 };
 #pragma pack(pop)
 
@@ -165,7 +165,7 @@ public:
 		unsigned short refIndex; // if this shader entry is a reference. do not set "buffer" if this is used
 		bool deleteBuffer;
 
-		unsigned __int64 flags[2]; // the input flags
+		unsigned int64_t flags[2]; // the input flags
 	};
 
 	struct Shader_t
@@ -210,8 +210,8 @@ public:
 		Shader_t* pixelShader;
 		Shader_t* vertexShader;
 
-		unsigned __int64 pixelShaderGuid;
-		unsigned __int64 vertexShaderGuid;
+		unsigned int64_t pixelShaderGuid;
+		unsigned int64_t vertexShaderGuid;
 
 		unsigned short numPixelShaderTextures;
 		unsigned short numVertexShaderTextures;
@@ -281,7 +281,7 @@ public:
 		writtenAnything = true;
 	}
 
-	inline void SetShaderSetHeader(const unsigned __int64 pixelShaderGuid, const unsigned __int64 vertexShaderGuid,
+	inline void SetShaderSetHeader(const unsigned int64_t pixelShaderGuid, const uint64_t vertexShaderGuid,
 		const unsigned short numPixelShaderTextures, const unsigned short numVertexShaderTextures,
 		const unsigned short numSamplers, const unsigned char firstResourceBindPoint, const unsigned char numResources)
 	{
@@ -436,7 +436,7 @@ public:
 		}
 	}
 
-	__forceinline bool WriteFile(const char* filePath)
+	FORCEINLINE bool WriteFile(const char* filePath)
 	{
 		if (!writtenAnything)
 			return false;
