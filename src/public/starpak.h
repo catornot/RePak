@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+
 #define STARPAK_MAGIC (('k'<<24)+('P'<<16)+('R'<<8)+'S')
 #define STARPAK_VERSION 1
 #define STARPAK_EXTENSION ".starpak"

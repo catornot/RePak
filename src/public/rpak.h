@@ -4,6 +4,7 @@
 #include "math/vector.h"
 #include "math/color.h"
 #include "public/starpak.h"
+#include "pch.h"
 
 #ifndef MAKE_FOURCC
 #define MAKE_FOURCC(a,b,c,d) ((d<<24)+(c<<16)+(b<<8)+a)

@@ -2,6 +2,7 @@
 #include "assets.h"
 #include "public/ui.h"
 #include "public/rui_package.h"
+#include <stdlib.h>
 
 void UI_loadFromPackage(CPakFileBuilder* const pak, const PakGuid_t assetGuid, const char* const assetPath) {
     

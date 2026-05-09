@@ -1,5 +1,8 @@
 #pragma once
 
+#include "pch.h"
+#include <cstdint>
+
 // dds id
 #define DDS_MAGIC ((' '<<24)+('S'<<16)+('D'<<8)+'D') // dds 'magic', placed before 'dwSize'
 

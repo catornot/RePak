@@ -1,5 +1,10 @@
 #pragma once
 #include "public/ui.h"
+#include "pch.h"
+#include <cerrno>
+#include <cstdio>
+#include <stdio.h>
+#include <stdlib.h>
 
 #define RUI_PACKAGE_MAGIC ('R' | ('U' << 8) | ('I' << 16) | ('P' << 24))
 #define RUI_PACKAGE_VERSION 1
@@ -50,8 +55,8 @@ struct RuiPackage {
 	
 
 	RuiPackage(const fs::path& inputPath) {
-		FILE* f = NULL;
-		errno_t errorCode = fopen_s(&f, inputPath.string().c_str(), "rb");
+		FILE* f = fopen(inputPath.string().c_str(), "rb");
+		error_t errorCode = errno;
 		if (errorCode == 0) {
 			fread(&hdr,sizeof(hdr),1,f);
 			if(hdr.magic != RUI_PACKAGE_MAGIC)

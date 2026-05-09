@@ -6,6 +6,7 @@
 //-----------------------------------------------------------------------------
 static void Console_SetBackgroundColor(COLORREF color)
 {
+    #ifdef _MSC_VER
     CONSOLE_SCREEN_BUFFER_INFOEX sbInfoEx{ 0 };
     sbInfoEx.cbSize = sizeof(CONSOLE_SCREEN_BUFFER_INFOEX);
 
@@ -23,6 +24,7 @@ static void Console_SetBackgroundColor(COLORREF color)
 
     sbInfoEx.ColorTable[0] = color;
     SetConsoleScreenBufferInfoEx(consoleOut, &sbInfoEx);
+    #endif
 }
 
 //-----------------------------------------------------------------------------
@@ -31,6 +33,7 @@ static void Console_SetBackgroundColor(COLORREF color)
 //-----------------------------------------------------------------------------
 bool Console_ColorInit()
 {
+    #ifdef _MSC_VER
     HANDLE hOutput = GetStdHandle(STD_OUTPUT_HANDLE);
     DWORD dwMode = NULL;
 
@@ -42,6 +45,7 @@ bool Console_ColorInit()
 
     Console_SetBackgroundColor(0x00000000);
     Logger_colorInit();
+    #endif
 
     return true;
 }

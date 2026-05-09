@@ -24,6 +24,9 @@
 #include <fstream>
 #include <regex>
 #include <charconv>
+#include <algorithm>
+#include <cstring>
+#include <cstdint>
 #include <immintrin.h>
 
 #include <rapidcsv.h>
@@ -45,7 +48,12 @@ namespace rapidjson { typedef ::std::size_t SizeType; }
 #include "logic/rmem.h"
 #include "logic/rtech.h"
 
+#ifndef _Printf_format_string_
 #define _Printf_format_string_
+#endif
+#ifndef _In_
+#define _In_
+#endif
 
 #include "utils/binaryio.h"
 #include "utils/utils.h"

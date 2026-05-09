@@ -455,7 +455,7 @@ static void SettingsLayout_ParseMap(CPakFileBuilder* const pak, const char* cons
 
     SettingsLayoutParseResult_s& rootParseResult = asset.rootLayout;
 
-    rootParseResult.arrayElemCount = max(JSON_GetValueOrDefault(document, "elementCount", 1u), 1u);
+    rootParseResult.arrayElemCount = std::max(JSON_GetValueOrDefault(document, "elementCount", 1u), 1u);
     rootParseResult.extraDataSizeIndex = JSON_GetValueRequired<uint32_t>(document, "extraDataSizeIndex");
 
     // Parse the root layout and figure out what the highest sub-layout index is.

@@ -6,6 +6,8 @@
 #ifndef JSONUTILS_H
 #define JSONUTILS_H
 
+#include "pch.h"
+
 typedef void(*JSONLogger_fn)(const char* fmt, ...);
 inline JSONLogger_fn g_jsonErrorCallback = nullptr;
 

@@ -6,6 +6,12 @@
 #include "pch.h"
 #include "dxutils.h"
 
+#ifndef MAKEFOURCC
+#define MAKEFOURCC(ch0, ch1, ch2, ch3)  \
+    ((DWORD)(BYTE)(ch0) | ((DWORD)(BYTE)(ch1) << 8) |  \
+    ((DWORD)(BYTE)(ch2) << 16) | ((DWORD)(BYTE)(ch3) << 24 ))
+#endif
+
 struct LegacyDDS
 {
 	DXGI_FORMAT     format;
@@ -421,8 +427,10 @@ const char* DXUtils::GetFormatAsString(DXGI_FORMAT fmt)
 	case DXGI_FORMAT_P208: return "DXGI_FORMAT_P208";
 	case DXGI_FORMAT_V208: return "DXGI_FORMAT_V208";
 	case DXGI_FORMAT_V408: return "DXGI_FORMAT_V408";
+  #ifdef _MSC_VER
 	case DXGI_FORMAT_SAMPLER_FEEDBACK_MIN_MIP_OPAQUE: return "DXGI_FORMAT_SAMPLER_FEEDBACK_MIN_MIP_OPAQUE";
 	case DXGI_FORMAT_SAMPLER_FEEDBACK_MIP_REGION_USED_OPAQUE: return "DXGI_FORMAT_SAMPLER_FEEDBACK_MIP_REGION_USED_OPAQUE";
+	#endif
 	case DXGI_FORMAT_FORCE_UINT: return "DXGI_FORMAT_FORCE_UINT";
 	default: return "DXGI_FORMAT_UNKNOWN";
 	}

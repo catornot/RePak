@@ -152,7 +152,7 @@ PakPage_s& CPakPageBuilder::FindOrCreatePage(const int flags, const int align, c
 		// pages, the alignment and padding happens after all pages have been
 		// built. The data should remain below PAK_MAX_PAGE_MERGE_SIZE when it
 		// has been padded out, else a new page should be created.
-		if (IALIGN(header.dataSize, max(header.alignment, align)) + size > PAK_MAX_PAGE_MERGE_SIZE)
+		if (IALIGN(header.dataSize, std::max(header.alignment, align)) + size > PAK_MAX_PAGE_MERGE_SIZE)
 			continue;
 
 		if (header.alignment != align)

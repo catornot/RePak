@@ -1,5 +1,10 @@
 #pragma once
+#include "logic/pakfile.h"
 #include "materialflags.h"
+#include "pch.h"
+#include "public/rpak.h"
+#include <cstdint>
+#include <string>
 
 #define MAT_DX_STATE_COUNT 2 // the same for r2 and r5
 #define MAT_BLEND_STATE_COUNT 8 // r2 is 4

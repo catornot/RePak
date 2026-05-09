@@ -136,7 +136,7 @@ void CStreamCache::BuildStarMapFromPaksDirectory(const char* const streamCacheFi
 			if (entryHeader->offset < STARPAK_DATABLOCK_ALIGNMENT) [[unlikely]] // also not possible
 				Error("Stream entry #%lld has an offset lower than %d; streaming file appears corrupt.\n", i, STARPAK_DATABLOCK_ALIGNMENT);
 
-			char* const entryData = reinterpret_cast<char*>(_aligned_malloc(entryHeader->size, 8));
+			char* const entryData = reinterpret_cast<char*>(std::aligned_alloc(8, entryHeader->size));
 
 			starpakStream.Seek(entryHeader->offset, std::ios::beg);
 			starpakStream.Read(entryData, entryHeader->size);
@@ -151,7 +151,7 @@ void CStreamCache::BuildStarMapFromPaksDirectory(const char* const streamCacheFi
 			assert(entryHeader->size < INT32_MAX);
 
 			MurmurHash3_x64_128(entryData, static_cast<size_t>(entryHeader->size), MURMUR_SEED, &cacheEntry.hash);
-			_aligned_free(entryData);
+			std::free(entryData);
 		}
 
 		starpakIndex++;

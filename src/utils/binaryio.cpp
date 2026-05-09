@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "binaryio.h"
+#include <ios>
 #include <sys/stat.h>
 
 //-----------------------------------------------------------------------------
@@ -36,7 +37,7 @@ static std::ios_base::openmode GetInternalStreamMode(const BinaryIO::Mode_e mode
 	}
 
 	assert(0); // code bug, can never reach this.
-	return 0;
+	return std::ios::in;
 }
 
 //-----------------------------------------------------------------------------
@@ -64,8 +65,8 @@ bool BinaryIO::Open(const char* const filePath, const Mode_e mode)
 
 	if (IsReadMode())
 	{
-		struct _stat64 status;
-		if (_stat64(filePath, &status) != NULL)
+		struct stat64 status;
+		if (stat64(filePath, &status) != 0)
 		{
 			return false;
 		}
@@ -84,7 +85,7 @@ void BinaryIO::Reset()
 	m_size = 0;
 	m_skip = 0;
 	m_mode = Mode_e::None;
-	m_flags = 0;
+	m_flags = std::_Ios_Openmode();
 }
 
 //-----------------------------------------------------------------------------
@@ -281,7 +282,7 @@ bool BinaryIO::WriteString(const std::string& input, const bool nullterminate)
 // limit number of io calls and allocations by just using this static buffer
 // for padding out the stream.
 static constexpr size_t PAD_BUF_SIZE = 4096;
-const static char s_padBuf[PAD_BUF_SIZE];
+const static char s_padBuf[PAD_BUF_SIZE] = {};
 
 //-----------------------------------------------------------------------------
 // Purpose: pads the out stream up to count bytes

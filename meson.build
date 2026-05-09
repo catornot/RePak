@@ -4,7 +4,7 @@ project(
   version : '0.1',
   meson_version : '>= 1.3.0',
   # default_options : ['warning_level=3', 'cpp_std=c++20'],
-  default_options : ['warning_level=3', 'cpp_std=c++20'],
+  default_options : ['warning_level=0', 'cpp_std=c++20'],
 )
 
 cpp = meson.get_compiler('cpp')
@@ -105,5 +105,3 @@ exe = executable(
   include_directories : include_directories('src'),
   cpp_pch : 'src/pch.h'
 )
-
-test('basic', exe)

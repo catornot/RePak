@@ -3,9 +3,8 @@
 // purpose: various common utilities
 //
 //=============================================================================//
-#include "pch.h"
 #include "utils.h"
-#include "rapidjson/error/en.h"
+#include <rapidjson/error/en.h>
 
 //-----------------------------------------------------------------------------
 // purpose: gets size of the specified file
@@ -31,7 +30,7 @@ size_t Utils::PadBuffer(char** buf, size_t size, size_t alignment)
 	size_t newSize = IALIGN(size, alignment);
 
 	char* newbuf = new char[newSize]{};
-	memcpy_s(newbuf, size, *buf, size);
+	std::memcpy(newbuf, *buf, size);
 
 	delete[] *buf;
 
@@ -63,7 +62,7 @@ size_t Utils::WriteStringVector(BinaryIO& out, const std::vector<std::string>& d
 FILETIME Utils::GetSystemFileTime()
 {
 	FILETIME ft;
-	memset(&fd, 0x0, sizeof(fd))
+	memset(&ft, 0x0, sizeof(ft));
   #ifdef _MSC_VER
   GetSystemTimeAsFileTime(&ft);
   #endif

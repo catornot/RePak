@@ -1,5 +1,9 @@
 #pragma once
+
+#include "pch.h"
+#include <cstring>
 #include <stdlib.h>
+#include <stdio.h>
 #include <vector> // this will be removed eventuallytm
 
 #undef DOMAIN // go away
@@ -64,8 +68,8 @@ struct MultiShaderWrapper_ShaderSet_t
 {
 	// For R5-exported assets, these should both always be set, but in the event that a shaderset doesn't have one of the shader types,
 	// we need to make sure that the parser only tries to read valid data.
-	unsigned int64_t pixelShaderGuid;
-	unsigned int64_t vertexShaderGuid;
+	uint64_t pixelShaderGuid;
+	uint64_t vertexShaderGuid;
 
 	unsigned short numPixelShaderTextures;
 	unsigned short numVertexShaderTextures;
@@ -84,9 +88,9 @@ static_assert(sizeof(MultiShaderWrapper_ShaderSet_t) == 32);
 
 struct MultiShaderWrapper_Shader_t
 {
-	// shaderFeatures MUST be the first member of this struct! see WriteShader.
-	unsigned int64_t shaderFeatures : 56; // Defines some shader counts.
-	unsigned int64_t numShaderDescriptors : 8;  // Number of MultiShaderWrapper_ShaderDesc_t struct instances before file data.
+	// shaderFeatures MUST be the first member of this structuuWriteShaderu
+	uint64_t shaderFeatures : 56; // Defines some shader counu.
+	uint64_t numShaderDescriptors : 8;  // Number of MultiShaderWrapper_ShaderDesc_t struct instances before file data.
 
 	unsigned int nameLength;
 	unsigned int nameOffset;
@@ -121,7 +125,7 @@ struct MultiShaderWrapper_ShaderDesc_t
 		_ReferenceShader u_ref;
 	};
 
-	unsigned int64_t inputFlags[2];
+	uint64_t inputFlags[2];
 };
 #pragma pack(pop)
 
@@ -165,7 +169,7 @@ public:
 		unsigned short refIndex; // if this shader entry is a reference. do not set "buffer" if this is used
 		bool deleteBuffer;
 
-		unsigned int64_t flags[2]; // the input flags
+		uint64_t flags[2]; // the input flags
 	};
 
 	struct Shader_t
@@ -210,8 +214,8 @@ public:
 		Shader_t* pixelShader;
 		Shader_t* vertexShader;
 
-		unsigned int64_t pixelShaderGuid;
-		unsigned int64_t vertexShaderGuid;
+		uint64_t pixelShaderGuid;
+		uint64_t vertexShaderGuid;
 
 		unsigned short numPixelShaderTextures;
 		unsigned short numVertexShaderTextures;
@@ -281,7 +285,7 @@ public:
 		writtenAnything = true;
 	}
 
-	inline void SetShaderSetHeader(const unsigned int64_t pixelShaderGuid, const uint64_t vertexShaderGuid,
+	inline void SetShaderSetHeader(const uint64_t pixelShaderGuid, const uint64_t vertexShaderGuid,
 		const unsigned short numPixelShaderTextures, const unsigned short numVertexShaderTextures,
 		const unsigned short numSamplers, const unsigned char firstResourceBindPoint, const unsigned char numResources)
 	{
@@ -300,9 +304,9 @@ public:
 	bool ReadFile(const char* filePath, ShaderCache_t* outCache)
 	{
 		assert(outCache);
-		FILE* f = NULL;
+		FILE* f = fopen(filePath, "rb");
 
-		if (fopen_s(&f, filePath, "rb") == 0)
+		if (f != nullptr)
 		{
 			MultiShaderWrapper_Header_t fileHeader = {};
 
@@ -441,9 +445,9 @@ public:
 		if (!writtenAnything)
 			return false;
 
-		FILE* f = NULL;
+		FILE* f = fopen(filePath, "wb");
 
-		if (fopen_s(&f, filePath, "wb") == 0)
+		if (f != nullptr)
 		{
 			MultiShaderWrapper_Header_t fileHeader =
 			{
@@ -521,7 +525,7 @@ private:
 		};
 
 		// Copy to the start of the struct, since we can't copy directly to a bitfield
-		memcpy_s(&shdr, sizeof(shader->features), shader->features, sizeof(shader->features));
+		std::memcpy(&shdr, shader->features, sizeof(shader->features));
 
 		const int headerHeaderPos = ftell(f);
 		fseek(f, sizeof(shdr), SEEK_CUR);

@@ -52,7 +52,7 @@
 
               buildInputs = [
                 pkgs.rapidjson
-                pkgs.zstd.dev
+                pkgs.zstd
                 (pkgs.rapidcsv.overrideAttrs (
                   prevAttrs: finalAttrs: {
                     version = "8.88";
@@ -71,6 +71,10 @@
               shellHook = ''
                 export CC="ccache clang"
                 export CXX="ccache clang++"
+                cp -f ${pkgs.writeText ".clangd" ''
+                  CompileFlags:
+                    CompilationDatabase: "build"
+                ''} .clangd
               '';
             };
       }

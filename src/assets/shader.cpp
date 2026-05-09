@@ -3,6 +3,7 @@
 #include "public/shader.h"
 #include "public/multishader.h"
 #include "utils/dxutils.h"
+#include <cstring>
 
 static void Shader_LoadFromMSW(CPakFileBuilder* const pak, const char* const assetPath, CMultiShaderWrapperIO::ShaderCache_t& shaderCache)
 {
@@ -70,7 +71,7 @@ static void Shader_CreateFromMSW(CPakFileBuilder* const pak, PakPageLump_s& cpuD
 				bc->inputSignatureBlobSize = bc->dataSize;
 			}
 
-			memcpy_s(cpuDataChunk.data + nextBytecodeBufferOffset, entry.size, entry.buffer, entry.size);
+			std::memcpy(cpuDataChunk.data + nextBytecodeBufferOffset, entry.buffer, entry.size);
 			nextBytecodeBufferOffset += IALIGN(entry.size, 8);
 		}
 		else
@@ -125,7 +126,7 @@ static void Shader_SetupHeader(ShaderAssetHeader_v12_t* const hdr, const CMultiS
 {
 	// Set to invalid so we can update it when a buffer is found, and detect that it has been set.
 	hdr->type = eShaderType::Invalid;
-	memcpy_s(hdr->shaderFeatures, sizeof(hdr->shaderFeatures), shader->features, sizeof(shader->features));
+	std::memcpy(hdr->shaderFeatures, shader->features, sizeof(shader->features));
 }
 
 template<typename ShaderAssetHeader_t>

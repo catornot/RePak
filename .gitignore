@@ -338,6 +338,8 @@ ASALocalRun/
 *.rpak
 *.starpak
 
+/.cache
+
 # Nix
 /result
 /.direnv

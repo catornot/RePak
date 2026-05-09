@@ -72,11 +72,11 @@ void CPakFileBuilder::AddJSONAsset(const PakAssetHandler_s& assetHandler, const 
 	{
 		Debug("Adding '%s' asset \"%s\".\n", assetHandler.assetType, assetPath);
 
-		const steady_clock::time_point start = high_resolution_clock::now();
+		const auto start = high_resolution_clock::now();
 		const PakGuid_t assetGuid = Pak_GetGuidOverridable(file, assetPath);
 
 		targetFunc(this, assetGuid, assetPath, file);
-		const steady_clock::time_point stop = high_resolution_clock::now();
+		const auto stop = high_resolution_clock::now();
 
 		const microseconds duration = duration_cast<microseconds>(stop - start);
 		Debug("...done; took %lld ms.\n", duration.count());
@@ -501,7 +501,7 @@ static bool Pak_StreamToStreamEncode(BinaryIO& inStream, BinaryIO& outStream, co
 		return false;
 	}
 
-	if (!Pak_InitEncoderContext(&s_zstdPakEncoder.cctx, decodedFrameSize, compressLevel, workerCount))
+	if (!Pak_InitEncoderContext(s_zstdPakEncoder.cctx, decodedFrameSize, compressLevel, workerCount))
 	{
 		return false;
 	}
@@ -546,7 +546,7 @@ static bool Pak_StreamToStreamEncode(BinaryIO& inStream, BinaryIO& outStream, co
 		bool finished;
 		do {
 			ZSTD_outBuffer outputFrame = { buffOut, buffOutSize, 0 };
-			size_t const remaining = ZSTD_compressStream2(&s_zstdPakEncoder.cctx, &outputFrame, &inputFrame, mode);
+			size_t const remaining = ZSTD_compressStream2(s_zstdPakEncoder.cctx, &outputFrame, &inputFrame, mode);
 
 			if (ZSTD_isError(remaining))
 			{
@@ -584,7 +584,7 @@ static bool Pak_StreamToStreamDecode(BinaryIO& inStream, BinaryIO& outStream, co
 		return false;
 	}
 
-	if (!Pak_InitDecoderContext(&s_zstdPakDecoder.dctx))
+	if (!Pak_InitDecoderContext(s_zstdPakDecoder.dctx))
 	{
 		return false;
 	}
@@ -628,7 +628,7 @@ static bool Pak_StreamToStreamDecode(BinaryIO& inStream, BinaryIO& outStream, co
 
 		while (inputFrame.pos < inputFrame.size) {
 			ZSTD_outBuffer outputFrame = { buffOut, buffOutSize, 0 };
-			size_t const ret = ZSTD_decompressStream(&s_zstdPakDecoder.dctx, &outputFrame, &inputFrame);
+			size_t const ret = ZSTD_decompressStream(s_zstdPakDecoder.dctx, &outputFrame, &inputFrame);
 
 			if (ZSTD_isError(ret))
 			{
@@ -658,7 +658,7 @@ static bool Pak_StreamToStreamDecode(BinaryIO& inStream, BinaryIO& outStream, co
 size_t Pak_EncodeStreamAndSwap(BinaryIO& io, const int compressLevel, const int workerCount, const uint16_t pakVersion, const char* const pakPath)
 {
 	Log("*** encoding pak file \"%s\" with compress level %i and %i workers.\n", pakPath, compressLevel, workerCount);
-	const steady_clock::time_point start = high_resolution_clock::now();
+	const auto start = high_resolution_clock::now();
 
 	BinaryIO outCompressed;
 	std::string outCompressedPath = pakPath;
@@ -689,7 +689,7 @@ size_t Pak_EncodeStreamAndSwap(BinaryIO& io, const int compressLevel, const int 
 			pakPath, reopenedPakSize, compressedSize);
 	}
 
-	const steady_clock::time_point stop = high_resolution_clock::now();
+	const auto stop = high_resolution_clock::now();
 	const microseconds duration = duration_cast<microseconds>(stop - start);
 
 	Log("*** finished pak file encoding; took %lld ms (%zu bytes -- %.1f%% ratio).\n",
@@ -705,7 +705,7 @@ size_t Pak_EncodeStreamAndSwap(BinaryIO& io, const int compressLevel, const int 
 size_t Pak_DecodeStreamAndSwap(BinaryIO& io, const uint16_t pakVersion, const char* const pakPath)
 {
 	Log("*** decoding pak file \"%s\".\n", pakPath);
-	const steady_clock::time_point start = high_resolution_clock::now();
+	const auto start = high_resolution_clock::now();
 
 	BinaryIO outDecompressed;
 	std::string outDecompressedPath = pakPath;
@@ -736,7 +736,7 @@ size_t Pak_DecodeStreamAndSwap(BinaryIO& io, const uint16_t pakVersion, const ch
 			pakPath, reopenedPakSize, decompressedSize);
 	}
 
-	const steady_clock::time_point stop = high_resolution_clock::now();
+	const auto stop = high_resolution_clock::now();
 	const microseconds duration = duration_cast<microseconds>(stop - start);
 
 	Log("*** finished pak file decoding; took %lld ms (%zu bytes -- %.1f%% ratio).\n",

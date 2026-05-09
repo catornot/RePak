@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+
 #define R2_UI_VERSION 30
 
 enum class VariableType : uint8_t {
