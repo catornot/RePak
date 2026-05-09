@@ -139,15 +139,15 @@ struct studiohdr_t
 	// set during load of mdl data to track *desired* lod configuration (not actual)
 	// the *actual* clamped root lod is found in studiohwdata
 	// this is stored here as a global store to ensure the staged loading matches the rendering
-	byte rootLOD;
+	std::byte rootLOD;
 
 	// set in the mdl data to specify that lod configuration should only allow first numAllowRootLODs
 	// to be set as root LOD:
 	//	numAllowedRootLODs = 0	means no restriction, any lod can be set as root lod.
 	//	numAllowedRootLODs = N	means that lod0 - lod(N-1) can be set as root lod, but not lodN or lower.
-	byte numAllowedRootLODs;
+	std::byte numAllowedRootLODs;
 
-	byte unused;
+	std::byte unused;
 
 	float fadedistance;
 

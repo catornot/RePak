@@ -62,7 +62,8 @@
                       repo = "rapidcsv";
                       rev = "v${finalAttrs.version}";
                       hash = "sha256-8g96mgTArtpAYHqfGCBaG4WB0ho3l8nygAS8yLVq0XE=";
-std::byt)e                  }
+                    };
+                  }
                 ))
                 dxvk-native
               ];
