@@ -37,8 +37,7 @@ static size_t DataTable_SetupRows(const rapidcsv::Document& doc, datatable_t* co
     // other rows must match this count.
     for (uint32_t i = 0; i < doc.GetRowCount(); ++i)
     {
-        // const uint32_t columnCount = static_cast<uint32_t>(doc.GetColumnCount(i));
-        const uint32_t columnCount = static_cast<uint32_t>(doc.GetColumnCount());
+        const uint32_t columnCount = static_cast<uint32_t>(doc.GetColumnCount(i));
 
         if (columnCount != dtblHdr->numColumns)
             Error("Expected %u columns for data row #%u, found %u.\n", dtblHdr->numColumns, i, columnCount);
