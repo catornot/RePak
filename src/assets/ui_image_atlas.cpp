@@ -16,28 +16,23 @@ void Assets::AddUIImageAsset_v10(CPakFileBuilder* const pak, const PakGuid_t ass
     const char* const atlasPath = JSON_GetValueRequired<const char*>(mapEntry, "atlas");
     const PakGuid_t atlasGuid = RTech::StringToGuid(atlasPath);
 
-    // silently try and get the atlas asset early so we don't have to fetch it in both branches
-    PakAsset_t* atlasAsset = pak->GetAssetByGuid(atlasGuid, nullptr, true);
+    const bool textureAdded = Texture_AutoAddTexture(pak, atlasGuid, atlasPath, true);
 
-    if (!Texture_AutoAddTexture(pak, atlasGuid, atlasPath, true/*streaming disabled as uimg can not be streamed*/))
-    {
-        // might as well double check that we have a valid pointer!
-        if(atlasAsset && atlasAsset->HasAnyStreamedData())
-            Error("UI Atlas texture \"%s\" with GUID 0x%llX was already added as a texture with streaming data. UI Image atlases do not support streaming.\n", atlasPath, atlasGuid);
-    }
+    const PakAsset_t* const atlasAsset = pak->GetAssetByGuid(atlasGuid, nullptr, true);
 
-    PakAsset_t& asset = pak->BeginAsset(assetGuid, assetPath);
+    if(!textureAdded && atlasAsset && atlasAsset->HasAnyStreamedData())
+        Error("UI Atlas texture \"%s\" with GUID 0x%llX was already added as a texture with streaming data. UI Image atlases do not support streaming.\n", atlasPath, atlasGuid);
 
-    // this really shouldn't be triggered, since the texture is either automatically added above, or a fatal error is thrown
-    // there is no code path in AddTextureAsset in which the texture does not exist after the call and still continues execution
     if (!atlasAsset) [[ unlikely ]]
     {
         assert(0);
         Error("Internal failure while adding atlas texture \"%s\" with GUID 0x%llX.\n", atlasPath, assetGuid);
     }
 
-    // make sure referenced asset is a texture for sanity
+    // Make sure the atlas asset is actually a texture
     atlasAsset->EnsureType(TYPE_TXTR);
+
+    PakAsset_t& asset = pak->BeginAsset(assetGuid, assetPath);
 
     rapidjson::Value::ConstMemberIterator imagesIt;
     JSON_GetRequired(mapEntry, "images", JSONFieldType_e::kArray, imagesIt);
@@ -261,8 +256,11 @@ void Assets::AddUIImageAsset_v10(CPakFileBuilder* const pak, const PakGuid_t ass
             const size_t pathBufSize = pathLen + 1; // +1 for null terminator.
             memcpy(&devLump.data[nextStringTableOffset], imagePath, pathBufSize);
 
-            ifBuf.write(nextStringTableOffset);
+            ifBuf.write(nextStringTableOffset << 16);
             nextStringTableOffset += (uint32_t)pathBufSize;
+
+            if (nextStringTableOffset >= UINT16_MAX)
+                Error("Failed to add UIMG asset \"%s\": Image debug names buffer exceeded the 16-bit limit (image names were too long, or too many images in one atlas)\n", assetPath);
         }
         else
         {
