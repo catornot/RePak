@@ -20,7 +20,7 @@ namespace Utils
 	size_t WriteStringVector(BinaryIO& out, const std::vector<std::string>& dataVector);
 
 	void AppendSlash(std::string& in);
-	void FixSlashes(std::string& in, const char correctPathSeparator = '/');
+	void FixSlashes(std::string& in, const char correctPathSeparator = '\\');
 
 	std::string ChangeExtension(const std::string& in, const std::string& ext);
 
