@@ -190,10 +190,7 @@ struct RuiPackage {
 	std::vector<Argument_s> arguments;
 	std::vector<ArgCluster_s> argCluster;
 	std::vector<char> styleDescriptors;
-<<<<<<< HEAD
-=======
 	std::vector<RuiPackageMapping_v1_t> keyframingMappings;
 	std::vector<size_t> keyframingValueOffsets;
 	std::vector<char> keyframingValues;
->>>>>>> remote/main
 };
