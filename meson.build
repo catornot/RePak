@@ -11,8 +11,6 @@ cpp = meson.get_compiler('cpp')
 
 if build_machine.system() == 'linux'
   lib_d3d11 = cpp.find_library('dxvk_d3d11')
-else
-  lib_d311 = []
 endif
 
 zstd_sources = [
@@ -148,12 +146,21 @@ rapidjson_dep = declare_dependency(
     include_directories: include_directories('src/thirdparty/rapidjson'),
 )
 
-dependencies = [
-  rapidjson_dep,
-  rapidcsv_dep,  
-  zstd_dep,
-  lib_d3d11
-]
+if build_machine.system() == 'linux'
+  dependencies = [
+    rapidjson_dep,
+    rapidcsv_dep,  
+    zstd_dep,
+    lib_d3d11
+  ]
+else
+  dependencies = [
+    rapidjson_dep,
+    rapidcsv_dep,  
+    zstd_dep
+  ]
+endif
+
 
 sources = [
   'src/application/console.cpp',

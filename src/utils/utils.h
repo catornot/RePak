@@ -4,7 +4,7 @@
 #include <cstdint>
 #include <malloc.h>
 
-#ifndef _FILETIME
+#if  !defined(_MSC_VER)
 typedef struct _FILETIME {
   uint32_t dwLowDateTime;
   uint32_t dwHighDateTime;
