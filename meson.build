@@ -7,6 +7,11 @@ project(
   default_options : ['warning_level=0', 'cpp_std=c++20'],
 )
 
+add_global_arguments(
+  [ '-DRAPIDJSON_PARSE_DEFAULT_FLAGS=kParseTrailingCommasFlag|kParseCommentsFlag|kParseIterativeFlag|kParseValidateEncodingFlag' ],
+  language: 'cpp',
+)
+
 cpp = meson.get_compiler('cpp')
 
 if build_machine.system() == 'linux'
@@ -127,7 +132,6 @@ rapidcsv_dep = declare_dependency(
     include_directories: include_directories('src/thirdparty/rapidcsv'),
 )
 
-
 rapidjson_dep = declare_dependency(
     include_directories: include_directories('src/thirdparty/rapidjson'),
 )
@@ -232,5 +236,5 @@ exe = executable(
   install : true,
   dependencies : dependencies,
   include_directories : include_directories('src'),
-  cpp_pch : 'src/pch.h'
+  cpp_pch : 'src/pch.h',
 )
