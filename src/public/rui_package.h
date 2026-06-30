@@ -63,10 +63,18 @@ struct RuiPackage {
 	
 
 	RuiPackage(const fs::path& inputPath) {
+		int errorCode = 0;
+		#if defined(_MSC_VER)
+		FILE* f = nullptr;
+		fopen_s(&f, inputPath.string().c_str(), "rb");
+		#else
 		FILE* f = fopen(inputPath.string().c_str(), "rb");
 		error_t errorCode = errno;
-		if (errorCode == 0) {
-			fread(&hdr,sizeof(hdr),1,f);
+		#endif
+		if (errorCode != 0 || !f){
+			Error("Could not open ruip file %s with error %x",inputPath.string().c_str(),errorCode);
+		}
+		fread(&hdr,sizeof(hdr),1,f);
 			if(hdr.magic != RUI_PACKAGE_MAGIC)
 				Error("Attempted to load an invalid RUIP file (expected magic %x, got %x).\n", RUI_PACKAGE_MAGIC, hdr.magic);
 			if(hdr.packageVersion != RUI_PACKAGE_VERSION)
@@ -114,10 +122,8 @@ struct RuiPackage {
 			fread(keyframingData.data(), 1, hdr.keyframingSize, f);
 			ParseKeyframingData(keyframingData);
 			fclose(f);
-		}
-		else {
-			Error("Could not open ruip file %s with error %x",inputPath.string().c_str(),errorCode);
-		}
+		
+		
 	}
 
 	RuiHeader_v30_s CreateRuiHeader_v30() {

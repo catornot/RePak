@@ -122,27 +122,13 @@ zstd_dep = declare_dependency(
     include_directories: include_directories('src/thirdparty/zstd'),
 )
 
-lib_rapidcsv = static_library(
-    'rapidcsv',
-    sources : [],
-    dependencies: [],
-    include_directories: include_directories('src/thirdparty/rapidcsv'),
-)
 
 rapidcsv_dep = declare_dependency(
-    link_with: lib_rapidcsv,
     include_directories: include_directories('src/thirdparty/rapidcsv'),
 )
 
-lib_rapidjson = static_library(
-    'rapidjson',
-    sources : [],
-    dependencies: [],
-    include_directories: include_directories('src/thirdparty/rapidjson'),
-)
 
 rapidjson_dep = declare_dependency(
-    link_with: lib_rapidjson,
     include_directories: include_directories('src/thirdparty/rapidjson'),
 )
 

@@ -161,9 +161,9 @@ static void DataTable_SetupValues(CPakFileBuilder* const pak, PakAsset_t& asset,
             {
                 const std::string val = DataTable_ParseCellFromDocument<std::string>(doc, colIdx, rowIdx, col.type);
 
-                if (!strcasecmp(val.c_str(), "true") || val == "1")
+                if (!_stricmp(val.c_str(), "true") || val == "1")
                     valbuf.write<uint32_t>(true);
-                else if (!strcasecmp(val.c_str(), "false") || val == "0")
+                else if (!_stricmp(val.c_str(), "false") || val == "0")
                     valbuf.write<uint32_t>(false);
                 else
                     DataTable_ReportInvalidValueError(col.type, rowIdx, colIdx);

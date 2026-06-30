@@ -65,12 +65,19 @@ bool BinaryIO::Open(const char* const filePath, const Mode_e mode)
 
 	if (IsReadMode())
 	{
+		#ifdef _MSC_VER
+			struct _stat64 status;
+			if (_stat64(filePath, &status) != 0)
+			{
+				return false;
+			}
+	#else
 		struct stat64 status;
 		if (stat64(filePath, &status) != 0)
 		{
 			return false;
 		}
-
+		#endif
 		m_size = status.st_size;
 	}
 
@@ -85,7 +92,11 @@ void BinaryIO::Reset()
 	m_size = 0;
 	m_skip = 0;
 	m_mode = Mode_e::None;
-	m_flags = std::_Ios_Openmode();
+	#if defined(_MSC_VER)
+		m_flags = 0;
+	#else
+		m_flags = std::_Ios_Openmode();
+	#endif
 }
 
 //-----------------------------------------------------------------------------

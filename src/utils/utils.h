@@ -104,4 +104,5 @@ private:
     {
         std::free(ptr);
     }
+	#define _stricmp strcasecmp
 #endif
