@@ -63,13 +63,13 @@ struct RuiPackage {
 	
 
 	RuiPackage(const fs::path& inputPath) {
-		int errorCode = 0;
+		int errorCode;
 		#if defined(_MSC_VER)
 		FILE* f = nullptr;
-		fopen_s(&f, inputPath.string().c_str(), "rb");
+		errorCode = fopen_s(&f, inputPath.string().c_str(), "rb");
 		#else
 		FILE* f = fopen(inputPath.string().c_str(), "rb");
-		error_t errorCode = errno;
+		errorCode = errno;
 		#endif
 		if (errorCode != 0 || !f){
 			Error("Could not open ruip file %s with error %x",inputPath.string().c_str(),errorCode);
